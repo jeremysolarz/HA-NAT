@@ -1,0 +1,96 @@
+# see also
+# https://github.com/GoogleCloudPlatform/deploymentmanager-samples/issues/41
+imports:
+- path: templates/compute.jinja
+  name: compute.jinja
+- path: templates/instanceTemplate.jinja
+  name: instanceTemplate.jinja
+- path: startup.sh
+  name: startup-script.sh
+- path: templates/instanceGroup.jinja
+  name: instanceGroup.jinja
+- path: templates/route.jinja
+  name: route.jinja
+
+resources:
+# IPs
+- name: nat-1-ip
+  type: compute.v1.address
+  properties:
+    region: europe-west1
+- name: nat-2-ip
+  type: compute.v1.address
+  properties:
+    region: europe-west1
+- name: nat-3-ip
+  type: compute.v1.address
+  properties:
+    region: europe-west1
+# instanste templates
+- name: nat-1-it
+  type: instanceTemplate.jinja
+  properties:
+    ip: $(ref.nat-1-ip.address)
+    metadata-from-file:
+      startup-script: startup-script.sh
+- name: nat-2-it
+  type: instanceTemplate.jinja
+  properties:
+    ip: $(ref.nat-2-ip.address)
+    metadata-from-file:
+      startup-script: startup-script.sh
+- name: nat-3-it
+  type: instanceTemplate.jinja
+  properties:
+    ip: $(ref.nat-3-ip.address)
+    metadata-from-file:
+      startup-script: startup-script.sh
+# health checks
+- name: nat-health-check
+  type: compute.v1.httpHealthCheck
+  properties:
+    checkIntervalSec: 30
+    healthyThreshold: 1
+    unhealthyThreshold: 5
+    requestPath: /health-check
+# firewall
+- name: natfirewall
+  type: compute.v1.firewall
+  properties:
+    allowed:
+    - IPProtocol: tcp
+      ports: [80]
+    targetTags: ["natgw"]
+    sourceRanges: ["209.85.152.0/22","209.85.204.0/22","35.191.0.0/16"]
+# taken from https://github.com/GoogleCloudPlatform/deploymentmanager-samples/tree/master/examples/v2/igm-updater/jinja
+# instanste groups
+- name: nat-1-ig
+  type: instanceGroup.jinja
+  properties:
+    zone: europe-west1-b#
+    instanceTemplate: nat-1-it
+- name: nat-2-ig
+  type: instanceGroup.jinja
+  properties:
+    zone: europe-west1-c
+    instanceTemplate: nat-2-it
+- name: nat-3-ig
+  type: instanceGroup.jinja
+  properties:
+    zone: europe-west1-d
+    instanceTemplate: nat-3-it
+# routes
+- name: nat-1-route
+  type: route.jinja
+  properties:
+    instanceGroup: nat-1-ig
+- name: nat-2-route
+  type: route.jinja
+  properties:
+    instanceGroup: nat-2-ig
+- name: nat-3-route
+  type: route.jinja
+  properties:
+    instanceGroup: nat-3-ig
+
+
