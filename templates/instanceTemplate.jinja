@@ -1,0 +1,28 @@
+resources:
+- name: {{ env["name"] }}
+  type: compute.v1.instanceTemplate
+  properties:
+    machineType: https://www.googleapis.com/compute/v1/projects//zones/{{ properties["zone"] }}/machineTypes/n1-standard-2
+    canIpForward: true
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-8
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/{{ env["project"] }}/global/networks/default
+      # Access Config required to give the instance a public IP address
+      accessConfigs:
+      - natIP: {{ properties["ip"] }}
+    tags:
+      items: ["natgw"]
+    metadata:
+      items:
+      # taken from https://github.com/GoogleCloudPlatform/deploymentmanager-samples/tree/master/examples/v2/metadata_from_file
+      {% for key, value in properties['metadata-from-file'].iteritems() %}
+      - key: {{ key }}
+        value: |
+          {{ imports[value]|indent(10) }}
+    {% endfor %}

@@ -1,0 +1,8 @@
+resources:
+ - name: {{ env["name"] }}
+   type: compute.v1.route
+   properties:
+     destRange: "0.0.0.0/0"
+     tags: ["no-ip"]
+     priority: 800
+     nextHopInstance: $(ref.{{ properties['instanceGroup'] }}.selfLink)
