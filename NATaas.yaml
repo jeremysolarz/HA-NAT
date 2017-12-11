@@ -1,8 +1,8 @@
 # see also
 # https://github.com/GoogleCloudPlatform/deploymentmanager-samples/issues/41
 imports:
-- path: templates/compute.jinja
-  name: compute.jinja
+#- path: templates/compute.jinja
+# name: compute.jinja
 - path: templates/instanceTemplate.jinja
   name: instanceTemplate.jinja
 - path: startup.sh
