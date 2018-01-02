@@ -5,4 +5,5 @@ resources:
      destRange: "0.0.0.0/0"
      tags: ["no-ip"]
      priority: 800
-     nextHopInstance: $(ref.{{ properties['instanceGroup'] }}.selfLink)
+     nextHopIp: {{ properties['internalIP'] }}
+     # nextHopInstance: $(ref.{{ properties['instanceGroup'] }}.listInstances(instanceGroup={{ properties['instanceGroup'] }}, ).items[0].instance)
