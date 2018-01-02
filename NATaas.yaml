@@ -31,18 +31,21 @@ resources:
   type: instanceTemplate.jinja
   properties:
     ip: $(ref.nat-1-ip.address)
+    zone: europe-west1-b
     metadata-from-file:
       startup-script: startup-script.sh
 - name: nat-2-it
   type: instanceTemplate.jinja
   properties:
     ip: $(ref.nat-2-ip.address)
+    zone: europe-west1-c
     metadata-from-file:
       startup-script: startup-script.sh
 - name: nat-3-it
   type: instanceTemplate.jinja
   properties:
     ip: $(ref.nat-3-ip.address)
+    zone: europe-west1-d
     metadata-from-file:
       startup-script: startup-script.sh
 # health checks
@@ -67,7 +70,7 @@ resources:
 - name: nat-1-ig
   type: instanceGroup.jinja
   properties:
-    zone: europe-west1-b#
+    zone: europe-west1-b
     instanceTemplate: nat-1-it
 - name: nat-2-ig
   type: instanceGroup.jinja
