@@ -2,9 +2,8 @@ resources:
  - name: {{ env["name"] }}
    type: compute.v1.route
    properties:
-     network: $(ref.nat-network.selfLink)
+     network: projects/{{ env["project"] }}/global/networks/default
      destRange: "0.0.0.0/0"
      tags: ["no-ip"]
      priority: 800
      nextHopIp: {{ properties['internalIP'] }}
-     # nextHopInstance: $(ref.{{ properties['instanceGroup'] }}.listInstances(instanceGroup={{ properties['instanceGroup'] }}, ).items[0].instance)

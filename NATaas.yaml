@@ -1,8 +1,6 @@
-# see also
-# https://github.com/GoogleCloudPlatform/deploymentmanager-samples/issues/41
 imports:
-#- path: templates/compute.jinja
-# name: compute.jinja
+- path: templates/NATaas.jinja
+  name: NATaas.jinja
 - path: templates/instanceTemplate.jinja
   name: instanceTemplate.jinja
 - path: startup.sh
@@ -13,104 +11,14 @@ imports:
   name: route.jinja
 
 resources:
-- name: nat-network
-  type: compute.v1.network
+- name: NATaaS
+  type: NATaas.jinja
   properties:
-    IPv4Range: 192.168.0.0/16
-# IPs
-- name: nat-1-ip
-  type: compute.v1.address
-  properties:
+    # settings to adjust
     region: europe-west1
-- name: nat-2-ip
-  type: compute.v1.address
-  properties:
-    region: europe-west1
-- name: nat-3-ip
-  type: compute.v1.address
-  properties:
-    region: europe-west1
-# instanste templates
-- name: nat-1-it
-  type: instanceTemplate.jinja
-  properties:
-    ip: $(ref.nat-1-ip.address)
-    # adjust IP to your network
-    internalIP: 192.168.0.2
-    zone: europe-west1-b
-    metadata-from-file:
-      startup-script: startup-script.sh
-- name: nat-2-it
-  type: instanceTemplate.jinja
-  properties:
-    ip: $(ref.nat-2-ip.address)
-    # adjust IP to your network
-    internalIP: 192.168.0.3
-    zone: europe-west1-c
-    metadata-from-file:
-      startup-script: startup-script.sh
-- name: nat-3-it
-  type: instanceTemplate.jinja
-  properties:
-    ip: $(ref.nat-3-ip.address)
-    # adjust IP to your network
-    internalIP: 192.168.0.4
-    zone: europe-west1-d
-    metadata-from-file:
-      startup-script: startup-script.sh
-# health checks
-- name: nat-health-check
-  type: compute.v1.httpHealthCheck
-  properties:
-    checkIntervalSec: 30
-    healthyThreshold: 1
-    unhealthyThreshold: 5
-    requestPath: /health-check
-# firewall
-- name: natfirewall
-  type: compute.v1.firewall
-  properties:
-    network: $(ref.nat-network.selfLink)
-    allowed:
-    - IPProtocol: tcp
-      ports: [80]
-    targetTags: ["natgw"]
-    sourceRanges: ["209.85.152.0/22","209.85.204.0/22","35.191.0.0/16"]
-# taken from https://github.com/GoogleCloudPlatform/deploymentmanager-samples/tree/master/examples/v2/igm-updater/jinja
-# instanste groups
-- name: nat-1-ig
-  type: instanceGroup.jinja
-  properties:
-    zone: europe-west1-b
-    instanceTemplate: nat-1-it
-- name: nat-2-ig
-  type: instanceGroup.jinja
-  properties:
-    zone: europe-west1-c
-    instanceTemplate: nat-2-it
-- name: nat-3-ig
-  type: instanceGroup.jinja
-  properties:
-    zone: europe-west1-d
-    instanceTemplate: nat-3-it
-# routes
-- name: nat-1-route
-  type: route.jinja
-  properties:
-    zone: europe-west1-b
-    internalIP: $(ref.nat-1-it.properties.networkInterfaces[0].networkIP)
-    instanceGroup: nat-1-ig
-- name: nat-2-route
-  type: route.jinja
-  properties:
-    zone: europe-west1-c
-    internalIP: $(ref.nat-2-it.properties.networkInterfaces[0].networkIP)
-    instanceGroup: nat-2-ig
-- name: nat-3-route
-  type: route.jinja
-  properties:
-    zone: europe-west1-d
-    internalIP: $(ref.nat-3-it.properties.networkInterfaces[0].networkIP)
-    instanceGroup: nat-3-ig
-
-
+    zone_1: europe-west1-b
+    zone_2: europe-west1-c
+    zone_3: europe-west1-d
+    internalIP_1: 10.132.0.2
+    internalIP_2: 10.132.0.3
+    internalIP_3: 10.132.0.4

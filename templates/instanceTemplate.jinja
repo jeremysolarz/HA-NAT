@@ -4,7 +4,7 @@ resources:
   properties:
     properties:
       project: {{ env["project"] }}
-      machineType: n1-standard-1
+      machineType: n1-standard-2
       canIpForward: true
       properties:
         zone: {{ properties["zone"] }}
@@ -16,7 +16,7 @@ resources:
         initializeParams:
           sourceImage: projects/debian-cloud/global/images/family/debian-8
       networkInterfaces:
-      - network: $(ref.nat-network.selfLink)
+      - network: projects/{{ env["project"] }}/global/networks/default
         networkIP: {{ properties["internalIP"] }} 
         # Access Config required to give the instance a public IP address
         accessConfigs:
@@ -26,7 +26,6 @@ resources:
         items: ["natgw"]
       metadata:
         items:
-        # taken from https://github.com/GoogleCloudPlatform/deploymentmanager-samples/tree/master/examples/v2/metadata_from_file
         {% for key, value in properties['metadata-from-file'].iteritems() %}
         - key: {{ key }}
           value: |
