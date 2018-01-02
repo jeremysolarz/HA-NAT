@@ -69,11 +69,11 @@ Add two VMs with no external IP (can't communicate with internet)
 Create third VM to use as jumphost to access internal VMs
 `gcloud compute instances create vm3`
 
-#### Add NAT tag to vm1
+*Add NAT tag to vm1*
 This will allow vm1 to connect to the internet via the NAT service.
 `gcloud compute instances add-tags vm1 --tags no-ip`
 
-#### Connect to natted VM
+*Connect to natted VM*
 SSH to vm3
 `gcloud beta compute ssh vm3`
 
@@ -86,7 +86,7 @@ SSH to vm1 from vm3
 Test connection works
 `ping 8.8.8.8`
 
-#### Connect to unnatted VM
+*Connect to unnatted VM*
 SSH to vm3
 `gcloud beta compute ssh vm3`
 
@@ -96,12 +96,12 @@ SSH to vm2 from vm3
 Test connection does not work
 `ping 8.8.8.8`
 
-#### Test delete one of NAT servers
+*Test delete one of NAT servers*
 
 You can see how the NAT service still works without interruption.
 `gcloud compute instances list | grep nat-1 | cut -d ' ' -f 1 | xargs gcloud compute instances delete --quiet`
 
-### Remove NAT tag
+*Remove NAT tag*
 `gcloud compute instances remove-tags vm1 --tags=no-ip`
 
 ### Undeploy
