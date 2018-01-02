@@ -43,10 +43,20 @@ NATaas.yaml.yaml
      |- route.jinja (zone3)
 ```
 
-## Important commands
+## Deploy & Test the service
 
-### Preview
-`gcloud deployment-manager deployments create nataas-v1 --config NATaas.yaml --preview`
+Before deployment you need to adjust the following settings in [NATaas.yaml](NATaas.yaml) to your environment.
+
+```YAML
+    # settings to adjust
+    region: europe-west1
+    zone_1: europe-west1-b
+    zone_2: europe-west1-c
+    zone_3: europe-west1-d
+    internalIP_1: 10.132.0.2
+    internalIP_2: 10.132.0.3
+    internalIP_3: 10.132.0.4
+```
 
 ### Deploy
 `gcloud deployment-manager deployments create nataas-v1 --config NATaas.yaml`
@@ -59,7 +69,8 @@ Add two VMs with no external IP (can't communicate with internet)
 Create third VM to use as jumphost to access internal VMs
 `gcloud compute instances create vm3`
 
-Add NAT tag to vm2
+#### Add NAT tag to vm1
+This will allow vm1 to connect to the internet via the NAT service.
 `gcloud compute instances add-tags vm1 --tags no-ip`
 
 #### Connect to natted VM
@@ -85,8 +96,9 @@ SSH to vm2 from vm3
 Test connection does not work
 `ping 8.8.8.8`
 
-
 #### Test delete one of NAT servers
+
+You can see how the NAT service still works without interruption.
 `gcloud compute instances list | grep nat-1 | cut -d ' ' -f 1 | xargs gcloud compute instances delete --quiet`
 
 ### Remove NAT tag
@@ -94,6 +106,11 @@ Test connection does not work
 
 ### Undeploy
 `gcloud deployment-manager deployments delete nataas-v1`
+
+## Important commands
+
+### Preview
+`gcloud deployment-manager deployments create nataas-v1 --config NATaas.yaml --preview`
 
 
 ## Links
