@@ -16,8 +16,8 @@ resources:
         initializeParams:
           sourceImage: projects/debian-cloud/global/images/family/debian-8
       networkInterfaces:
-      - network: projects/{{ env["project"] }}/global/networks/default
-        networkIP: {{ properties["internalIP"] }}
+      - network: $(ref.nat-network.selfLink)
+        networkIP: {{ properties["internalIP"] }} 
         # Access Config required to give the instance a public IP address
         accessConfigs:
         - natIP: {{ properties["ip"] }}

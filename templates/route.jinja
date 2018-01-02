@@ -2,6 +2,7 @@ resources:
  - name: {{ env["name"] }}
    type: compute.v1.route
    properties:
+     network: $(ref.nat-network.selfLink)
      destRange: "0.0.0.0/0"
      tags: ["no-ip"]
      priority: 800

@@ -13,6 +13,10 @@ imports:
   name: route.jinja
 
 resources:
+- name: nat-network
+  type: compute.v1.network
+  properties:
+    IPv4Range: 192.168.0.0/16
 # IPs
 - name: nat-1-ip
   type: compute.v1.address
@@ -31,7 +35,8 @@ resources:
   type: instanceTemplate.jinja
   properties:
     ip: $(ref.nat-1-ip.address)
-    internalIP: 10.132.0.2
+    # adjust IP to your network
+    internalIP: 192.168.0.2
     zone: europe-west1-b
     metadata-from-file:
       startup-script: startup-script.sh
@@ -39,7 +44,8 @@ resources:
   type: instanceTemplate.jinja
   properties:
     ip: $(ref.nat-2-ip.address)
-    internalIP: 10.132.0.3
+    # adjust IP to your network
+    internalIP: 192.168.0.3
     zone: europe-west1-c
     metadata-from-file:
       startup-script: startup-script.sh
@@ -47,7 +53,8 @@ resources:
   type: instanceTemplate.jinja
   properties:
     ip: $(ref.nat-3-ip.address)
-    internalIP: 10.132.0.4
+    # adjust IP to your network
+    internalIP: 192.168.0.4
     zone: europe-west1-d
     metadata-from-file:
       startup-script: startup-script.sh
@@ -63,6 +70,7 @@ resources:
 - name: natfirewall
   type: compute.v1.firewall
   properties:
+    network: $(ref.nat-network.selfLink)
     allowed:
     - IPProtocol: tcp
       ports: [80]
@@ -90,19 +98,19 @@ resources:
   type: route.jinja
   properties:
     zone: europe-west1-b
-    internalIP: 10.132.0.2
+    internalIP: $(ref.nat-1-it.properties.networkInterfaces[0].networkIP)
     instanceGroup: nat-1-ig
 - name: nat-2-route
   type: route.jinja
   properties:
     zone: europe-west1-c
-    internalIP: 10.132.0.2
+    internalIP: $(ref.nat-2-it.properties.networkInterfaces[0].networkIP)
     instanceGroup: nat-2-ig
 - name: nat-3-route
   type: route.jinja
   properties:
     zone: europe-west1-d
-    internalIP: 10.132.0.2
+    internalIP: $(ref.nat-3-it.properties.networkInterfaces[0].networkIP)
     instanceGroup: nat-3-ig
 
 
