@@ -55,6 +55,7 @@ In the example below internal IPs come frome the CIDR range of the [default netw
     zone_1: europe-west1-b
     zone_2: europe-west1-c
     zone_3: europe-west1-d
+    # CIDR range 10.132.0.0/20 of europe-west1
     internalIP_1: 10.132.0.2
     internalIP_2: 10.132.0.3
     internalIP_3: 10.132.0.4
