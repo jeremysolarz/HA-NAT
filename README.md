@@ -47,6 +47,8 @@ NATaas.yaml.yaml
 
 Before deployment you need to adjust the following settings in [NATaas.yaml](NATaas.yaml) to your environment.
 
+In the example below internal IPs come frome the CIDR range of the [default network for the corresponding region](https://cloud.google.com/vpc/docs/vpc#ip-ranges). 
+
 ```YAML
     # settings to adjust
     region: europe-west1
