@@ -62,7 +62,7 @@ In the example below internal IPs come frome the CIDR range of the [default netw
 ```
 
 ### Deploy
-`gcloud deployment-manager deployments create HA-NAT-v1 --config HA-NAT.yaml`
+`gcloud deployment-manager deployments create ha-nat-v1 --config HA-NAT.yaml`
 
 ### Test it
 
@@ -108,12 +108,12 @@ You can see how the NAT service still works without interruption.
 `gcloud compute instances remove-tags vm1 --tags=no-ip`
 
 ### Undeploy
-`gcloud deployment-manager deployments delete HA-NAT-v1`
+`gcloud deployment-manager deployments delete ha-nat-v1`
 
 ## Important commands
 
 ### Preview
-`gcloud deployment-manager deployments create HA-NAT-v1 --config HA-NAT.yaml --preview`
+`gcloud deployment-manager deployments create ha-nat-v1 --config HA-NAT.yaml --preview`
 
 
 ## Links
