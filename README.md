@@ -18,15 +18,15 @@ The HA service takes the following input properties:
 * `zone_[1-3]`: the zones the three instance groups should be deployed to.
 * `internalIP_[1-3]`: the internal IP addresses .
 
-For more details on configuration of this template, see [NATaas.yaml](NATaas.yaml).
+For more details on configuration of this template, see [HA-NAT.yaml](HA-NAT.yaml).
 
 ## Architecture
 The template architecture for this configuration looks like this:
 
 ```
-NATaas.yaml.yaml
+HA-NAT.yaml.yaml
  |
- |- NATaas.jinja
+ |- HA-NAT.jinja
      |
      |- instanceTemplate.jinja
      |
@@ -45,7 +45,7 @@ NATaas.yaml.yaml
 
 ## Deploy & Test the service
 
-Before deployment you need to adjust the following settings in [NATaas.yaml](NATaas.yaml) to your environment.
+Before deployment you need to adjust the following settings in [HA-NAT.yaml](HA-NAT.yaml) to your environment.
 
 In the example below internal IPs come frome the CIDR range of the [default network for the corresponding region](https://cloud.google.com/vpc/docs/vpc#ip-ranges). 
 
@@ -62,7 +62,7 @@ In the example below internal IPs come frome the CIDR range of the [default netw
 ```
 
 ### Deploy
-`gcloud deployment-manager deployments create nataas-v1 --config NATaas.yaml`
+`gcloud deployment-manager deployments create HA-NAT-v1 --config HA-NAT.yaml`
 
 ### Test it
 
@@ -108,12 +108,12 @@ You can see how the NAT service still works without interruption.
 `gcloud compute instances remove-tags vm1 --tags=no-ip`
 
 ### Undeploy
-`gcloud deployment-manager deployments delete nataas-v1`
+`gcloud deployment-manager deployments delete HA-NAT-v1`
 
 ## Important commands
 
 ### Preview
-`gcloud deployment-manager deployments create nataas-v1 --config NATaas.yaml --preview`
+`gcloud deployment-manager deployments create HA-NAT-v1 --config HA-NAT.yaml --preview`
 
 
 ## Links

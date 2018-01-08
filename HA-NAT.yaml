@@ -1,6 +1,6 @@
 imports:
-- path: templates/NATaas.jinja
-  name: NATaas.jinja
+- path: templates/HA-NAT.jinja
+  name: HA-NAT.jinja
 - path: templates/instanceTemplate.jinja
   name: instanceTemplate.jinja
 - path: startup.sh
@@ -11,8 +11,8 @@ imports:
   name: route.jinja
 
 resources:
-- name: NATaaS
-  type: NATaas.jinja
+- name: HA-NAT
+  type: HA-NAT.jinja
   properties:
     # settings to adjust
     region: europe-west1
