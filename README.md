@@ -1,6 +1,6 @@
 # ​HA/High​ ​Bandwidth​ ​NAT​ ​Gateways
 
-Instances created with no public IP address are not able to connect to the internet. To allow access a NAT service has to be
+Instances created with no public IP address are not able to connect to the internet. To allow access a NAT interface has to be
  created inside GCP.
 
 ## Overview
